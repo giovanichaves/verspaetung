@@ -1,0 +1,7 @@
+server.port: 8081
+
+csv:
+  lines: data/lines.csv
+  delays: data/delays.csv
+  stops: data/stops.csv
+  times: data/times.csv
