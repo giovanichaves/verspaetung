@@ -1,5 +1,3 @@
-# Mobimeo Backend Engineering Challenge
-
 ## Problem
 
 In the fictional city of Verspaetung, public transport is notoriously unreliable. To tackle the problem, the city council has decided to make the public transport timetable and delay information public, opening up opportunities for innovative use cases.
