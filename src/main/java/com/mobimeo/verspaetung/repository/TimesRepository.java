@@ -22,7 +22,8 @@ public class TimesRepository implements com.mobimeo.verspaetung.repository.Repos
     }
 
     @Override
-    public void fetchData() {
+    public List<Time> fetchData() {
         this.data = ImmutableList.copyOf(datasource.fetchAll());
+        return this.getData();
     }
 }

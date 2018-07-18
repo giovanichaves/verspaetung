@@ -6,6 +6,8 @@ import com.mobimeo.verspaetung.model.Line;
 import lombok.Getter;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @Getter
 public class LinesRepository implements com.mobimeo.verspaetung.repository.Repository<Line> {
@@ -19,7 +21,8 @@ public class LinesRepository implements com.mobimeo.verspaetung.repository.Repos
     }
 
     @Override
-    public void fetchData() {
+    public List<Line> fetchData() {
         this.data = ImmutableList.copyOf(datasource.fetchAll());
+        return this.getData();
     }
 }

@@ -6,6 +6,8 @@ import com.mobimeo.verspaetung.model.Delay;
 import lombok.Getter;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @Getter
 public class DelaysRepository implements com.mobimeo.verspaetung.repository.Repository<Delay> {
@@ -19,7 +21,8 @@ public class DelaysRepository implements com.mobimeo.verspaetung.repository.Repo
     }
 
     @Override
-    public void fetchData() {
+    public List<Delay> fetchData() {
         this.data = ImmutableList.copyOf(datasource.fetchAll());
+        return this.getData();
     }
 }

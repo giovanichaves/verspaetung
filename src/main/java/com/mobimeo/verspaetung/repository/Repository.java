@@ -6,5 +6,5 @@ public interface Repository<T> {
 
     List<T> getData();
 
-    void fetchData();
+    List<T> fetchData();
 }

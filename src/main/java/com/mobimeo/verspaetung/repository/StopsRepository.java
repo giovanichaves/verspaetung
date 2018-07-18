@@ -6,6 +6,8 @@ import com.mobimeo.verspaetung.model.Stop;
 import lombok.Getter;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @Getter
 public class StopsRepository implements com.mobimeo.verspaetung.repository.Repository<Stop> {
@@ -19,7 +21,8 @@ public class StopsRepository implements com.mobimeo.verspaetung.repository.Repos
     }
 
     @Override
-    public void fetchData() {
+    public List<Stop> fetchData() {
         this.data = ImmutableList.copyOf(datasource.fetchAll());
+        return this.getData();
     }
 }
