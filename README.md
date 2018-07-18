@@ -22,13 +22,3 @@ A simple Swagger file containing two endpoints and the expected behaviour of eac
 Build a web API which implements this specification.
 
 Endpoints should be available via port `8081`
-
-## Implementation
-
-You can choose any programming language you are familiar with.
-
-Make sure to follow general software development best practices and best practices of the respective language.
-
-## Delivery
-
-Create a git repository and share the code with us through GitHub or zip file.
