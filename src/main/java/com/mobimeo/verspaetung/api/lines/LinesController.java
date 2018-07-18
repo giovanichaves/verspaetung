@@ -7,7 +7,6 @@ import com.mobimeo.verspaetung.service.StopsService;
 import com.mobimeo.verspaetung.service.TimesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +25,7 @@ public class LinesController {
     private final TimesService timesService;
     private final StopsService stopsService;
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping
     public ResponseEntity retrieveLines(
             @RequestParam("timestamp") LocalTime timestamp,
             @RequestParam("x") int posX,
@@ -45,7 +44,7 @@ public class LinesController {
     }
 
 
-    @GetMapping(value = "/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{name}")
     public ResponseEntity delayedLine(@PathVariable("name") String lineName) {
         if (!linesService.lineExists(lineName)) {
             return new ResponseEntity<>("The line " + lineName + " doesn't exist", HttpStatus.NOT_FOUND);
