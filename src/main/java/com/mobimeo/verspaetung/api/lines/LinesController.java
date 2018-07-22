@@ -1,6 +1,7 @@
 package com.mobimeo.verspaetung.api.lines;
 
-import com.mobimeo.verspaetung.model.Stop;
+import com.mobimeo.verspaetung.datasource.db.entities.Line;
+import com.mobimeo.verspaetung.datasource.db.entities.Stop;
 import com.mobimeo.verspaetung.service.DelaysService;
 import com.mobimeo.verspaetung.service.LinesService;
 import com.mobimeo.verspaetung.service.StopsService;
@@ -14,6 +15,7 @@ import java.awt.*;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/lines")
@@ -37,10 +39,15 @@ public class LinesController {
             return new ResponseEntity<>(String.format("There's no stop at %d,%d", posX, posY),  HttpStatus.NOT_FOUND);
         }
 
-        List<Integer> lineIds = timesService.findLineIdsAtStopAndTimestamp(stop.get(), timestamp);
-        List<String> lineNames = linesService.findLineNamesByIds(lineIds);
+        List<Line> lines = timesService.findLinesAtStopAndTimestamp(stop.get(), timestamp);
 
-        return new ResponseEntity<>(new VehiclesResponse(lineNames), HttpStatus.OK);
+        VehiclesResponse vehiclesResponse = new VehiclesResponse(
+                lines.stream()
+                    .map(Line::getName)
+                    .collect(Collectors.toList())
+        );
+
+        return new ResponseEntity<>(vehiclesResponse, HttpStatus.OK);
     }
 
 

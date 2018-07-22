@@ -1,10 +1,15 @@
 package com.mobimeo.verspaetung.service;
 
-import com.google.common.collect.ImmutableList;
-import com.mobimeo.verspaetung.model.Stop;
-import com.mobimeo.verspaetung.repository.StopsRepository;
+import com.google.common.collect.Lists;
+import com.mobimeo.verspaetung.VerspaetungApplication;
+import com.mobimeo.verspaetung.datasource.db.entities.Stop;
+import com.mobimeo.verspaetung.datasource.db.repository.StopsRepository;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.awt.*;
 import java.util.Optional;
@@ -13,17 +18,19 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = VerspaetungApplication.class)
 public class StopsServiceTest {
+
+    @Autowired
+    private StopsRepository repository;
     private StopsService stopsService;
 
     @Before
     public void setUp() {
-        StopsRepository repository = mock(StopsRepository.class);
-        when(repository.getData()).thenReturn(
-            ImmutableList.of(
+        repository.saveAll(
+            Lists.newArrayList(
                 new Stop(1, 1, 1),
                 new Stop(2, 2, 2),
                 new Stop(3, 3, 3)

@@ -2,12 +2,10 @@ package com.mobimeo.verspaetung.datasource.csv;
 
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectReader;
-import com.fasterxml.jackson.databind.RuntimeJsonMappingException;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvParser;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.mobimeo.verspaetung.datasource.Datasource;
 
 import java.io.*;
 import java.net.URL;
@@ -16,7 +14,7 @@ import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-abstract class CsvDatasource<T> implements Datasource {
+abstract class CsvDatasource<T> {
 
     private final File csvFile;
     private final Class<T> classType;
@@ -29,7 +27,6 @@ abstract class CsvDatasource<T> implements Datasource {
         this.classType = classType;
     }
 
-    @Override
     public List<T> fetchAll() {
         List<T> recordList = new ArrayList<>();
         CsvMapper mapper = new CsvMapper();
@@ -45,10 +42,6 @@ abstract class CsvDatasource<T> implements Datasource {
             while (mi.hasNext()) {
                 recordList.add(mi.next());
             }
-        } catch (RuntimeJsonMappingException e) {
-            throw new NotMatchingCsvMappingException("The datasource file " + csvFile + " format " +
-                    "does not match the mapped model for " + classType + ". Exception: " + e.getMessage()
-            );
         } catch (IOException e) {
             System.out.println("There was an error reading the datasource file");
         }
