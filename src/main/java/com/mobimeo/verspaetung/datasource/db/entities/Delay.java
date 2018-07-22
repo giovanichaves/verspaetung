@@ -5,17 +5,19 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Getter
 @EqualsAndHashCode
 @RequiredArgsConstructor
 @Entity
 @Table(name = "delays")
-public class Delay implements Serializable {
+public class Delay {
 
     @Id
+    private int id;
+
     @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
     private final Line line;
 
     private final int delayInMinutes;

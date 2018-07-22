@@ -18,9 +18,4 @@ public class Line {
     private final int id;
     private final String name;
 
-    @OneToOne(
-            fetch = FetchType.LAZY,
-            mappedBy = "line"
-    )
-    private Delay delay;
 }
