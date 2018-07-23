@@ -39,7 +39,7 @@ public class TimesFromCSV {
                     throw new StopNotFoundException("Stop " + csvRecord.get("line_name") + " doesn't exist");
                 }
 
-                timesRepository.saveAndFlush(
+                timesRepository.save(
                     new Time(
                         line.get(),
                         stop.get(),

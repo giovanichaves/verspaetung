@@ -29,7 +29,7 @@ public class DelaysFromCSV {
                 throw new LineNotFoundException("Line " + csvRecord.get("line_name") + " doesn't exist");
             }
 
-            delaysRepository.saveAndFlush(
+            delaysRepository.save(
                     new Delay(
                             line.get(),
                             Integer.parseInt(csvRecord.get("delay"))

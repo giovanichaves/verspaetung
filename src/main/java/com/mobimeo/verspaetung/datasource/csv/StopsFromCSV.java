@@ -20,7 +20,7 @@ public class StopsFromCSV {
     private final StopsRepository repository;
 
     public Consumer<CSVRecord> consumer() {
-        return ((csvRecord) -> repository.saveAndFlush(
+        return ((csvRecord) -> repository.save(
                 new Stop(
                         Integer.valueOf(csvRecord.get("stop_id")),
                         Integer.valueOf(csvRecord.get("x")),

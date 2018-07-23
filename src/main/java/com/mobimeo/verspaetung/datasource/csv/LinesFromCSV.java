@@ -19,7 +19,7 @@ public class LinesFromCSV {
     private final LinesRepository repository;
 
     public Consumer<CSVRecord> consumer() {
-        return ((csvRecord) -> repository.saveAndFlush(
+        return ((csvRecord) -> repository.save(
             new Line(
                     Integer.valueOf(csvRecord.get("line_id")),
                     csvRecord.get("line_name")
