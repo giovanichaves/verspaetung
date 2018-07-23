@@ -22,7 +22,7 @@ import java.util.function.Consumer;
 public class TimesFromCSV {
 
     @Value("${csv.times}")
-    private final String csvFileLocation;
+    private String csvFileLocation;
     private final TimesRepository timesRepository;
     private final LinesRepository linesRepository;
     private final StopsRepository stopRepository;
