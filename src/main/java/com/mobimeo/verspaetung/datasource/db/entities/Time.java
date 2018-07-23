@@ -2,20 +2,42 @@ package com.mobimeo.verspaetung.datasource.db.entities;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.time.LocalTime;
 
 @Getter
 @EqualsAndHashCode
-@RequiredArgsConstructor
+@NoArgsConstructor
 @Entity
-@Table(name = "times")
-public class Time {
+@Table(
+    name = "times",
+    uniqueConstraints={@UniqueConstraint(columnNames={"line_id", "stop_id", "time"})}
+)
 
-    @EmbeddedId
-    private final TimePK timePK;
+public class Time {
+    public Time(Line line, Stop stop, LocalTime time) {
+        this.line = line;
+        this.stop = stop;
+        this.time = time;
+    }
+
+    @Id
+    private int id;
+
+    @ManyToOne(
+            targetEntity = Line.class,
+            fetch = FetchType.LAZY
+    )
+    private Line line;
+
+    @ManyToOne(
+            targetEntity = Stop.class,
+            fetch = FetchType.LAZY
+    )
+    private Stop stop;
+
+    private LocalTime time;
 
 }

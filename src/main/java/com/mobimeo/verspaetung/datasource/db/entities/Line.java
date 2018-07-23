@@ -2,20 +2,27 @@ package com.mobimeo.verspaetung.datasource.db.entities;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Getter
 @EqualsAndHashCode
-@RequiredArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "lines")
 public class Line {
+    public Line(int line_id, String name) {
+        this.line_id = line_id;
+        this.name = name;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private final int id;
-    private final String name;
+    private int id;
+
+    private int line_id;
+
+    private String name;
 
 }

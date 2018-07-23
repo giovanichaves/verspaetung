@@ -18,8 +18,7 @@ import java.util.function.Consumer;
 @Component
 public class DelaysFromCSV {
 
-    @Value("${csv.delays}")
-    private final String csvFileLocation;
+    private @Value("${csv.delays}") String csvFileLocation;
     private final DelaysRepository delaysRepository;
     private final LinesRepository linesRepository;
 
@@ -30,7 +29,7 @@ public class DelaysFromCSV {
                 throw new LineNotFoundException("Line " + csvRecord.get("line_name") + " doesn't exist");
             }
 
-            delaysRepository.save(
+            delaysRepository.saveAndFlush(
                     new Delay(
                             line.get(),
                             Integer.parseInt(csvRecord.get("delay"))

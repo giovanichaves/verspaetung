@@ -15,7 +15,7 @@ public class StopsService {
     private final StopsRepository stopsRepository;
 
     public Optional<Stop> findStopAtPoint(Point coord) {
-        return stopsRepository.findByXandY((int)coord.getX(), (int)coord.getY());
+        return stopsRepository.findByXAndY((int)coord.getX(), (int)coord.getY());
     }
 
 }

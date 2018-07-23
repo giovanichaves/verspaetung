@@ -8,8 +8,11 @@ import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.Reader;
+import java.net.URL;
 import java.util.function.Consumer;
 
 @Component
@@ -27,10 +30,19 @@ public class InitialDataConfig {
 
 
     private void loadCSV(String csvFileLocation, Consumer<CSVRecord> consumer) throws Exception {
-        Reader in = new FileReader(csvFileLocation);
-        Iterable<CSVRecord> records = CSVFormat.EXCEL.parse(in);
+        Reader in = new FileReader(getFile(csvFileLocation));
+        Iterable<CSVRecord> records = CSVFormat.EXCEL.withHeader().parse(in);
         for (CSVRecord record : records) {
             consumer.accept(record);
         }
+    }
+
+    private File getFile(String csvFileLocation) throws FileNotFoundException {
+        URL fileUrl = this.getClass().getClassLoader().getResource(csvFileLocation);
+        if (fileUrl == null) {
+            throw new FileNotFoundException("The specified datasource file " + csvFileLocation + " was not found");
+        }
+
+        return new File(fileUrl.getFile());
     }
  }

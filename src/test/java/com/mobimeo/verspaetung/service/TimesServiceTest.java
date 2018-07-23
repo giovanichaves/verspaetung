@@ -5,7 +5,6 @@ import com.mobimeo.verspaetung.VerspaetungApplication;
 import com.mobimeo.verspaetung.datasource.db.entities.Line;
 import com.mobimeo.verspaetung.datasource.db.entities.Stop;
 import com.mobimeo.verspaetung.datasource.db.entities.Time;
-import com.mobimeo.verspaetung.datasource.db.entities.TimePK;
 import com.mobimeo.verspaetung.datasource.db.repository.TimesRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,32 +33,24 @@ public class TimesServiceTest {
         repository.saveAll(
             Lists.newArrayList(
                     new Time(
-                            new TimePK(
-                                    new Line(1, "line1"),
-                                    new Stop(1, 1, 1),
-                                    LocalTime.parse("10:00:00")
-                            )
+                                new Line(1, "line1"),
+                                new Stop(1, 1, 1),
+                                LocalTime.parse("10:00:00")
                     ),
                     new Time(
-                        new TimePK(
-                            new Line(2, "line2"),
-                            new Stop(1, 1, 1),
-                            LocalTime.parse("10:00:00")
-                        )
+                        new Line(2, "line2"),
+                        new Stop(1, 1, 1),
+                        LocalTime.parse("10:00:00")
                     ),
                     new Time(
-                        new TimePK(
-                            new Line(1, "line1"),
-                            new Stop(2, 2, 2),
-                            LocalTime.parse("11:00:00")
-                        )
+                        new Line(1, "line1"),
+                        new Stop(2, 2, 2),
+                        LocalTime.parse("11:00:00")
                     ),
                     new Time(
-                        new TimePK(
-                            new Line(3, "line3"),
-                            new Stop(4, 4, 4),
-                            LocalTime.parse("10:00:00")
-                        )
+                        new Line(3, "line3"),
+                        new Stop(4, 4, 4),
+                        LocalTime.parse("10:00:00")
                     )
             )
         );
