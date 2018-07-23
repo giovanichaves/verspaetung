@@ -2,6 +2,8 @@ package com.mobimeo.verspaetung.config;
 
 import com.mobimeo.verspaetung.datasource.csv.DelaysFromCSV;
 import com.mobimeo.verspaetung.datasource.csv.LinesFromCSV;
+import com.mobimeo.verspaetung.datasource.csv.StopsFromCSV;
+import com.mobimeo.verspaetung.datasource.csv.TimesFromCSV;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
@@ -21,11 +23,15 @@ public class InitialDataConfig {
 
     private final LinesFromCSV linesFromCSV;
     private final DelaysFromCSV delaysFromCSV;
+    private final StopsFromCSV stopsFromCSV;
+    private final TimesFromCSV timesFromCSV;
 
     @PostConstruct
     public void init() throws Exception {
         loadCSV(linesFromCSV.getCsvFileLocation(), linesFromCSV.consumer());
         loadCSV(delaysFromCSV.getCsvFileLocation(), delaysFromCSV.consumer());
+        loadCSV(stopsFromCSV.getCsvFileLocation(), stopsFromCSV.consumer());
+        loadCSV(timesFromCSV.getCsvFileLocation(), timesFromCSV.consumer());
     }
 
 
