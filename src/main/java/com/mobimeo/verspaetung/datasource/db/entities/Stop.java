@@ -12,8 +12,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "stops")
 public class Stop {
-    public Stop(int stop_id, int x, int y) {
-        this.stop_id = stop_id;
+    public Stop(int stopId, int x, int y) {
+        this.stopId = stopId;
         this.x = x;
         this.y = y;
     }
@@ -21,7 +21,7 @@ public class Stop {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    private int stop_id;
+    private int stopId;
     private int x;
     private int y;
 }

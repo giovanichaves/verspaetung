@@ -1,4 +1,4 @@
-package com.mobimeo.verspaetung.datasource.csv;
+package com.mobimeo.verspaetung.config;
 
 public class StopNotFoundException extends RuntimeException {
     public StopNotFoundException(String message) {

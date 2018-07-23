@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Table(name = "lines")
 public class Line {
     public Line(int line_id, String name) {
-        this.line_id = line_id;
+        this.lineId = line_id;
         this.name = name;
     }
 
@@ -21,7 +21,7 @@ public class Line {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    private int line_id;
+    private int lineId;
 
     private String name;
 

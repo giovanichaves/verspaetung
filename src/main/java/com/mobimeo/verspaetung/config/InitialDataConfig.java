@@ -1,12 +1,14 @@
 package com.mobimeo.verspaetung.config;
 
-import com.mobimeo.verspaetung.datasource.csv.DelaysFromCSV;
-import com.mobimeo.verspaetung.datasource.csv.LinesFromCSV;
-import com.mobimeo.verspaetung.datasource.csv.StopsFromCSV;
-import com.mobimeo.verspaetung.datasource.csv.TimesFromCSV;
+import com.mobimeo.verspaetung.datasource.db.entities.Delay;
+import com.mobimeo.verspaetung.datasource.db.entities.Line;
+import com.mobimeo.verspaetung.datasource.db.entities.Stop;
+import com.mobimeo.verspaetung.datasource.db.entities.Time;
+import com.mobimeo.verspaetung.datasource.db.repository.TimesRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -15,23 +17,35 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.Reader;
 import java.net.URL;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 @Component
 @RequiredArgsConstructor
 public class InitialDataConfig {
 
-    private final LinesFromCSV linesFromCSV;
-    private final DelaysFromCSV delaysFromCSV;
-    private final StopsFromCSV stopsFromCSV;
-    private final TimesFromCSV timesFromCSV;
+    private @Value("${csv.lines}") String linesCSVFileLocation;
+    private @Value("${csv.delays}") String delaysCSVFileLocation;
+    private @Value("${csv.stops}") String stopsCSVFileLocation;
+    private @Value("${csv.times}") String timesCSVFileLocation;
+
+    private List<Delay> delayList = new ArrayList<>();
+    private List<Line> lineList = new ArrayList<>();
+    private List<Stop> stopList = new ArrayList<>();
+    private List<Time> timeList = new ArrayList<>();
+    private final TimesRepository timesRepository;
 
     @PostConstruct
     public void init() throws Exception {
-        loadCSV(linesFromCSV.getCsvFileLocation(), linesFromCSV.consumer());
-        loadCSV(delaysFromCSV.getCsvFileLocation(), delaysFromCSV.consumer());
-        loadCSV(stopsFromCSV.getCsvFileLocation(), stopsFromCSV.consumer());
-        loadCSV(timesFromCSV.getCsvFileLocation(), timesFromCSV.consumer());
+        loadCSV(linesCSVFileLocation, csvToLines());
+        loadCSV(delaysCSVFileLocation, csvToDelays());
+        loadCSV(stopsCSVFileLocation, csvToStops());
+        loadCSV(timesCSVFileLocation, csvToTimes());
+
+
     }
 
 
@@ -51,4 +65,83 @@ public class InitialDataConfig {
 
         return new File(fileUrl.getFile());
     }
- }
+
+    private Consumer<CSVRecord> csvToLines() {
+        return ((csvRecord) -> lineList.add(
+                new Line(
+                        Integer.valueOf(csvRecord.get("line_id")),
+                        csvRecord.get("line_name")
+                )
+        ));
+    }
+
+    private Consumer<CSVRecord> csvToDelays() {
+        return ((csvRecord) -> {
+            Optional<Line> line = findLineByName(csvRecord.get("line_name"));
+            if (!line.isPresent()) {
+                throw new LineNotFoundException("Line " + csvRecord.get("line_name") + " doesn't exist");
+            }
+
+            delayList.add(
+                new Delay(
+                    line.get(),
+                    Integer.parseInt(csvRecord.get("delay"))
+                )
+            );
+        });
+    }
+
+    private Consumer<CSVRecord> csvToStops() {
+        return ((csvRecord) -> stopList.add(
+            new Stop(
+                    Integer.valueOf(csvRecord.get("stop_id")),
+                    Integer.valueOf(csvRecord.get("x")),
+                    Integer.valueOf(csvRecord.get("y"))
+            )
+        ));
+    }
+
+    private Consumer<CSVRecord> csvToTimes() {
+        return ((csvRecord) -> {
+            Optional<Line> line = findLineById(Integer.valueOf(csvRecord.get("line_id")));
+            if (!line.isPresent()) {
+                throw new LineNotFoundException("Line " + csvRecord.get("line_name") + " doesn't exist");
+            }
+
+            Optional<Stop> stop = findStopById(Integer.valueOf(csvRecord.get("stop_id")));
+            if (!stop.isPresent()) {
+                throw new StopNotFoundException("Stop " + csvRecord.get("stop_id") + " doesn't exist");
+            }
+
+            timeList.add(
+                new Time(
+                        line.get(),
+                        stop.get(),
+                        LocalTime.parse(csvRecord.get("time"))
+                )
+            );
+        });
+    }
+
+    private Optional<Stop> findStopById(Integer stopId) {
+        return stopList.stream()
+                .filter(stop -> stop.getStopId() == stopId)               .findFirst()
+                .findFirst();
+    }
+
+    private Optional<Line> findLineById(Integer lineId) {
+        return lineList.stream()
+                .filter(line -> line.getLineId() == lineId)
+                .findFirst();
+    }
+
+    private Optional<Line> findLineByName(String lineName) {
+        return lineList.stream()
+                .filter(line -> line.getName().equals(lineName))
+                .findFirst();
+    }
+
+    private void saveTimes() {
+        timeList.forEach(timesRepository::save);
+    }
+}
