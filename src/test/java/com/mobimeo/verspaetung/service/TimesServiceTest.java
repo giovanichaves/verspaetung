@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.transaction.Transactional;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -22,20 +23,21 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = VerspaetungApplication.class)
+@Transactional
 public class TimesServiceTest {
 
-    private TimesService timesService;
     @Autowired
     private TimesRepository repository;
+    private TimesService timesService;
 
     @Before
     public void setUp() {
         repository.saveAll(
             Lists.newArrayList(
                     new Time(
-                                new Line(1, "line1"),
-                                new Stop(1, 1, 1),
-                                LocalTime.parse("10:00:00")
+                        new Line(1, "line1"),
+                        new Stop(1, 1, 1),
+                        LocalTime.parse("10:00:00")
                     ),
                     new Time(
                         new Line(2, "line2"),

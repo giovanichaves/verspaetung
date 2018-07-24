@@ -11,16 +11,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.transaction.Transactional;
 import java.awt.*;
 import java.util.Optional;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = VerspaetungApplication.class)
+@Transactional
 public class StopsServiceTest {
 
     @Autowired
@@ -31,7 +31,7 @@ public class StopsServiceTest {
     public void setUp() {
         repository.saveAll(
             Lists.newArrayList(
-                new Stop(1, 1, 1),
+                new Stop(4, 4, 4),
                 new Stop(2, 2, 2),
                 new Stop(3, 3, 3)
             )
@@ -41,11 +41,11 @@ public class StopsServiceTest {
 
     @Test
     public void shouldReturnStopIdAtXAndY() {
-        Stop stopExpected = new Stop(1, 1, 1);
-        Optional<Stop> stopAtPoint = stopsService.findStopAtPoint(new Point(1, 1));
+        Stop stopExpected = new Stop(4, 4, 4);
+        Optional<Stop> stopAtPoint = stopsService.findStopAtPoint(new Point(1, 0));
 
         assertTrue(stopAtPoint.isPresent());
-        assertThat(stopExpected, equalTo(stopAtPoint.get()));
+        assertTrue(stopExpected.equals(stopAtPoint.get()));
     }
 
     @Test

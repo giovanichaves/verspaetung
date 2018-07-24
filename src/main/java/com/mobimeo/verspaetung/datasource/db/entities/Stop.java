@@ -10,7 +10,9 @@ import javax.persistence.*;
 @EqualsAndHashCode
 @NoArgsConstructor
 @Entity
-@Table(name = "stops")
+@Table(name = "stops",
+        uniqueConstraints={@UniqueConstraint(columnNames={"x", "y"})}
+)
 public class Stop {
     public Stop(int stopId, int x, int y) {
         this.stopId = stopId;
