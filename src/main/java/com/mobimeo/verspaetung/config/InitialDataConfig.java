@@ -4,6 +4,9 @@ import com.mobimeo.verspaetung.datasource.db.entities.Delay;
 import com.mobimeo.verspaetung.datasource.db.entities.Line;
 import com.mobimeo.verspaetung.datasource.db.entities.Stop;
 import com.mobimeo.verspaetung.datasource.db.entities.Time;
+import com.mobimeo.verspaetung.datasource.db.repository.DelaysRepository;
+import com.mobimeo.verspaetung.datasource.db.repository.LinesRepository;
+import com.mobimeo.verspaetung.datasource.db.repository.StopsRepository;
 import com.mobimeo.verspaetung.datasource.db.repository.TimesRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.csv.CSVFormat;
@@ -36,6 +39,9 @@ public class InitialDataConfig {
     private List<Line> lineList = new ArrayList<>();
     private List<Stop> stopList = new ArrayList<>();
     private List<Time> timeList = new ArrayList<>();
+    private final DelaysRepository delaysRepository;
+    private final LinesRepository linesRepository;
+    private final StopsRepository stopsRepository;
     private final TimesRepository timesRepository;
 
     @PostConstruct
@@ -45,7 +51,10 @@ public class InitialDataConfig {
         loadCSV(stopsCSVFileLocation, csvToStops());
         loadCSV(timesCSVFileLocation, csvToTimes());
 
-
+        saveDelays();
+        saveLines();
+        saveStops();
+        saveTimes();
     }
 
 
@@ -141,6 +150,15 @@ public class InitialDataConfig {
                 .findFirst();
     }
 
+    private void saveLines() {
+        lineList.forEach(linesRepository::save);
+    }
+    private void saveDelays() {
+        delayList.forEach(delaysRepository::save);
+    }
+    private void saveStops() {
+        stopList.forEach(stopsRepository::save);
+    }
     private void saveTimes() {
         timeList.forEach(timesRepository::save);
     }

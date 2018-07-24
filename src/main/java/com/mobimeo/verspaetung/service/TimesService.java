@@ -18,7 +18,7 @@ public class TimesService {
     private final TimesRepository timesRepository;
 
     public List<Line> findLinesAtStopAndTimestamp(Stop stop, LocalTime timestamp) {
-        return timesRepository.findByStopIdAndTime(stop, timestamp).stream()
+        return timesRepository.findByStopIdAndTime(stop.getId(), timestamp).stream()
                 .map(Time::getLine)
                 .collect(Collectors.toList());
     }
