@@ -125,7 +125,7 @@ public class InitialDataConfig {
 
     private Optional<Stop> findStopById(Integer stopId) {
         return stopList.stream()
-                .filter(stop -> stop.getStopId() == stopId)               .findFirst()
+                .filter(stop -> stop.getStopId() == stopId)
                 .findFirst();
     }
 
